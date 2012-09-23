@@ -1,0 +1,35 @@
+{
+    "name": "zendx/viewautoescape",
+    "description": "Zend Framework 1 autoescaping",
+    "type": "library",
+    "keywords": [
+        "escaping",
+        "view",
+        "zf1",
+        "zendframework"
+    ],
+    "repositories": [
+        {
+            "packagist": false
+        },
+        {
+            "type" : "vcs",
+            "url" : "https://github.com/cdsinternetagentur/zf1-composer.git"
+        }
+    ],
+    "homepage": "https://github.com/jensklose/ZendX_View_Autoescaping",
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": ">=5.2.4",
+        "zend/zendframework": "<2"
+    },
+    
+    "autoload": {
+        "classmap": ["ZendX"]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.2-dev"
+        }
+    }
+}
