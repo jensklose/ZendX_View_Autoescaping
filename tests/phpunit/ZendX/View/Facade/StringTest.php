@@ -29,17 +29,17 @@ class ZendX_View_Facade_StringTest extends PHPUnit_Framework_TestCase
     /**
      * encoding of this file ist important for successful testing
      */
-    public function testHtmlEscapingContextForStringTypes()
+    public function testShouldGetEscapedValuesForContext()
     {
         $testObject = new ZendX_View_Facade_String('Hallo <Jens> gib mal €s', $this->_view);
         
-        $this->assertEquals('Hallo &lt;Jens&gt; gib mal €s', (string) $testObject);
+        $this->assertSame('Hallo &lt;Jens&gt; gib mal €s', (string) $testObject);
         $this->assertInstanceOf('ZendX_View_Facade_String', $testObject->html());
-        $this->assertEquals('Hallo <Jens> gib mal €s', (string) $testObject->nofilter());
-        $this->assertEquals('Hallo <Jens> gib mal €s', (string) $testObject->raw());
-        $this->assertEquals('Hallo &lt;Jens&gt; gib mal €s', (string) $testObject->html());
-        $this->assertEquals('"Hallo <Jens> gib mal \u20acs"', (string) $testObject->json());
-        
+        $this->assertSame('Hallo <Jens> gib mal €s', (string) $testObject->nofilter());
+        $this->assertSame('Hallo <Jens> gib mal €s', (string) $testObject->raw());
+        $this->assertSame('Hallo &lt;Jens&gt; gib mal €s', (string) $testObject->html());
+        $this->assertSame('"Hallo <Jens> gib mal \u20acs"', (string) $testObject->json());
+        $this->assertSame('Hallo+%3CJens%3E+gib+mal+%E2%82%ACs', (string) $testObject->url());
     }
     
 }

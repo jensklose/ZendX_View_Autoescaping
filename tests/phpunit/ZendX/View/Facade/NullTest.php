@@ -24,7 +24,7 @@ class ZendX_View_Facade_NullTest extends PHPUnit_Framework_TestCase
     /**
      * encoding of this file ist important for successful testing
      */
-    public function testHtmlEscapingContextForStringTypes()
+    public function testShouldGetEscapedValuesForContext()
     {
         $testObject = new ZendX_View_Facade_Null('Hallo &lt;Jens&gt; gib mal €s', $this->_view);
         
@@ -34,7 +34,7 @@ class ZendX_View_Facade_NullTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', (string) $testObject->raw());
         $this->assertEquals('', (string) $testObject->html());
         $this->assertEquals('', (string) $testObject->json());
-        
+        $this->assertEquals('', (string) $testObject->url());
     }
     
     public function testValidShouldReturnFalse()

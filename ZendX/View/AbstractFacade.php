@@ -100,6 +100,9 @@ abstract class ZendX_View_AbstractFacade
             case 'raw':
                 return (string) $raw;
                 break;
+            case 'url':
+                return urlencode((string) $raw);
+                break;
             case 'json':
                 if (is_string($raw)) {
                     return
@@ -221,6 +224,22 @@ abstract class ZendX_View_AbstractFacade
             $key = func_get_arg(0);
         }
         return $this->getProperty($key, 'html');
+    }
+
+    /**
+     * url facading
+     * 
+     * @return mixed
+     */
+    public function url()
+    {
+        if (func_num_args()==0) {
+            $this->_escapingContext = 'url';
+            return $this;
+        } else {
+            $key = func_get_arg(0);
+        }
+        return $this->getProperty($key, 'url');
     }
 
     /**
