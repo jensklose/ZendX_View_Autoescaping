@@ -231,7 +231,7 @@ abstract class ZendX_View_AbstractFacade
      * 
      * @return mixed
      */
-    public function url()
+    public function urlencode()
     {
         if (func_num_args()==0) {
             $this->_escapingContext = 'url';

@@ -39,7 +39,7 @@ class ZendX_View_Facade_StringTest extends PHPUnit_Framework_TestCase
         $this->assertSame('Hallo <Jens> gib mal €s', (string) $testObject->raw());
         $this->assertSame('Hallo &lt;Jens&gt; gib mal €s', (string) $testObject->html());
         $this->assertSame('"Hallo <Jens> gib mal \u20acs"', (string) $testObject->json());
-        $this->assertSame('Hallo+%3CJens%3E+gib+mal+%E2%82%ACs', (string) $testObject->url());
+        $this->assertSame('Hallo+%3CJens%3E+gib+mal+%E2%82%ACs', (string) $testObject->urlencode());
     }
     
 }

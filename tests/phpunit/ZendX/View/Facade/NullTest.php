@@ -34,7 +34,7 @@ class ZendX_View_Facade_NullTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', (string) $testObject->raw());
         $this->assertEquals('', (string) $testObject->html());
         $this->assertEquals('', (string) $testObject->json());
-        $this->assertEquals('', (string) $testObject->url());
+        $this->assertEquals('', (string) $testObject->urlencode());
     }
     
     public function testValidShouldReturnFalse()
