@@ -96,13 +96,7 @@ abstract class ZendX_AbstractBean
             if (is_array($property)) {
                 $property = & $this->_setPropertyArray($property, $subProperty);
             } elseif ($property instanceof ZendX_AbstractBean) {
-                $newProperty = & $property->_setPropertyBean($subProperty);
-                
-//                if($property === null && count($disProperty) > 1) {
-//                    print_R($disProperty);
-//                } else {
-                    $property = & $newProperty;
-//                }
+                $property = & $property->_setPropertyBean($subProperty);
             } elseif (is_object($property)) {
                 $property = & $this->_setPropertyGenericObject($property, $subProperty);
             }
