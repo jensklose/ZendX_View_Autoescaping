@@ -133,8 +133,39 @@ class ZendX_AbstractBeanTest extends PHPUnit_Framework_TestCase
 
         $this->testBean->setProperty("quuux/deepTest/one/two/three/test", "zweiter neuer Wert");
         $this->assertEquals("zweiter neuer Wert", $this->testBean->getProperty("quuux/deepTest/one/two/three/test"));
+        
+        $this->testBean->setProperty("quuux/7", "dritter neuer Wert");
+        $this->assertEquals("dritter neuer Wert", $this->testBean->getProperty("quuux/7"));
     }
-
+    
+    public function testSetValueWithIndizeInEmptyBean()
+    {
+        $this->testBean = new ZendX_TestBean();
+        
+        $this->testBean->setProperty("quuux/0", "modern walking");
+        $this->assertEquals("modern walking", $this->testBean->getProperty("quuux/0"));
+        
+        $this->testBean->setProperty("quuux/test1", "ganz neuer Wert");
+        $this->assertEquals("ganz neuer Wert", $this->testBean->getProperty("quuux/test1"));
+        
+        $this->testBean->setProperty("quuuux/1/3", "triplet");
+        $this->assertEquals("triplet", $this->testBean->getProperty("quuuux/1/3"));
+    }
+    
+    public function testSetValueWithIndizeInEmptyObject()
+    {
+        $this->testBean = new ZendX_TestBean();
+        
+        $this->testBean->setProperty("quuux/0", new stdClass());
+        $this->assertEquals(new stdClass(), $this->testBean->getProperty("quuux/0"));
+        
+        $this->testBean->setProperty("quuux/0/1", "trials");
+        $this->assertEquals("trials", $this->testBean->getProperty("quuux/0/1"));
+        
+        $this->testBean->setProperty("quuux/0/2/3", "memorizing");
+        $this->assertEquals("memorizing", $this->testBean->getProperty("quuux/0/2/3"));
+    }
+    
     public function testAdditionOfStdObjectProperties() 
     {
         $array = array(
