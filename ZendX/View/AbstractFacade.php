@@ -85,6 +85,8 @@ abstract class ZendX_View_AbstractFacade
      * @return string
      */
     abstract protected function _fetchRawValue($key);
+
+    
     
     /**
      * special escaping
@@ -212,7 +214,8 @@ abstract class ZendX_View_AbstractFacade
 
     /**
      * html facading
-     * 
+     *
+     * @param string optional property path
      * @return mixed
      */
     public function html()
@@ -228,7 +231,8 @@ abstract class ZendX_View_AbstractFacade
 
     /**
      * url facading
-     * 
+     *
+     * @param string optional property path
      * @return mixed
      */
     public function urlencode()
@@ -236,15 +240,14 @@ abstract class ZendX_View_AbstractFacade
         if (func_num_args()==0) {
             $this->_escapingContext = 'url';
             return $this;
-        } else {
-            $key = func_get_arg(0);
         }
-        return $this->getProperty($key, 'url');
+        return $this->getProperty(func_get_arg(0), 'url');
     }
 
     /**
      * nofilter facading
-     * 
+     *
+     * @param string optional property path
      * @return mixed
      */
     public function nofilter()
@@ -258,7 +261,8 @@ abstract class ZendX_View_AbstractFacade
     
     /**
      * raw alias for nonfilter facading
-     * 
+     *
+     * @param string optional property path
      * @return mixed
      */
     public function raw()
@@ -271,7 +275,8 @@ abstract class ZendX_View_AbstractFacade
 
     /**
      * json facading
-     * 
+     *
+     * @param string optional property path
      * @return mixed
      */
     public function json()
@@ -285,7 +290,28 @@ abstract class ZendX_View_AbstractFacade
         }
         return $this->_escapeForContext($raw, 'json');
     }
-    
+
+    /**
+     * cast property to boolean
+     * 
+     * @param string optional property path
+     * @return boolean
+     */
+    public function toBool()
+    {
+        if (func_num_args()==0) {
+            $key = null;
+        } else {
+            $key = ltrim(func_get_arg(0), '/');
+        }
+        
+        $raw = $this->_fetchRawValue($key);
+        if (is_object($raw)) {
+            $raw = (array) $raw;
+        }
+        return (boolean) $raw;
+    }
+
     /**
      * checks if given property shall be ignored when output
      * 

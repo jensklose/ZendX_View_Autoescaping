@@ -65,7 +65,12 @@ class ZendX_View_Facade_String
      */
     protected function _fetchRawValue($key)
     {
-        return '';
+        if ('' == trim($key, '/')) {
+            return $this->_raw;
+        } else {
+            return '';
+        }
+
     }
 
 }

@@ -148,6 +148,9 @@ class ZendX_View_Facade_Iterator
      */
     protected function _fetchRawValue($key)
     {
+        if ($key === null) {
+            return $this->_arrayContext;
+        }
         return $this->_beanContext->getProperty(ltrim($key, '/'));
     }
 

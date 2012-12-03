@@ -310,5 +310,159 @@ class ZendX_View_AutoescapeTest extends PHPUnit_Framework_TestCase
         $test = $view->getProperty('content/ignoreThis');
         $this->assertInstanceOf('ZendX_Bean', $test->getProperty('bean'));
     }
+
+    public function testShouldCallToBoolMethodFromNullFacade()
+    {
+        $this->_view->nullValue = null;
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->nullValue->toBool());
+    }
+
+    public function testShouldCastBooleanForNullValues()
+    {
+        $this->_view->nullValue = null;
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->toBool('nullValue'));
+    }
+
+    public function testShouldCastBooleanForToDeepPropertyAsNullFacadeAndThenFalse()
+    {
+        $this->_view->flatValue = 'flat';
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->toBool('/flat/here/we/go'));
+    }
+
+    public function testShouldCastBooleanTrueForNonEmptyNumberValues()
+    {
+        $this->_view->numberValue = 543;
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(true, $this->_view->toBool('numberValue'));
+    }
+
+    public function testShouldCastBooleanFalseForEmptyNumberValues()
+    {
+        $this->_view->numberValue = 0;
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->toBool('numberValue'));
+    }
+
+    public function testShouldCastBooleanForNumberValuesAndToDeepPropertyCall()
+    {
+        $this->_view->numberValue = 8263.23;
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->toBool('numberValue/to/deep/bullshit'));
+    }
+
+    public function testShouldCastBooleanTrueForNonEmptyBoolValues()
+    {
+        $this->_view->boolValue = true;
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(true, $this->_view->toBool('boolValue'));
+    }
+
+    public function testShouldCastBooleanFalseForEmptyBoolValues()
+    {
+        $this->_view->boolValue = false;
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->toBool('boolValue'));
+    }
+
+    public function testShouldCastBooleanForBoolValuesAndToDeepPropertyCall()
+    {
+        $this->_view->boolValue = true;
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->toBool('boolValue/to/deep/bullshit'));
+    }
+
+    public function testShouldCastBooleanTrueForNonEmptyStringValues()
+    {
+        $this->_view->stringValue = 'kraaaBumm';
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(true, $this->_view->toBool('stringValue'));
+        $this->assertSame(true, $this->_view->stringValue->toBool());
+    }
+
+    public function testShouldCastBooleanFalseForEmptyStringValues()
+    {
+        $this->_view->stringValue = '';
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->toBool('stringValue'));
+        $this->assertSame(false, $this->_view->stringValue->toBool());
+    }
+
+    public function testShouldCastBooleanForStringValuesAndToDeepPropertyCall()
+    {
+        $this->_view->stringValue = 'kraaaBumm';
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->stringValue->toBool('/to/deep/bullshit'));
+    }
+
+    public function testShouldCastBooleanTrueForNonEmptyArrayValues()
+    {
+        $this->_view->arrayValue = array('42');
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(true, $this->_view->toBool('arrayValue'));
+        $this->assertSame(true, $this->_view->arrayValue->toBool());
+        $this->assertSame(true, $this->_view->arrayValue->toBool('/0'));
+        $this->assertSame(false, $this->_view->arrayValue->toBool('/1'));
+    }
+
+    public function testShouldCastBooleanFalseForEmptyArrayValues()
+    {
+        $this->_view->arrayValue = array();
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->toBool('arrayValue'));
+        $this->assertSame(false, $this->_view->arrayValue->toBool());
+    }
+
+    public function testShouldCastBooleanForArrayValuesAndToDeepPropertyCall()
+    {
+        $this->_view->arrayValue = array('42');
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->arrayValue->toBool('/0/to/deep/bullshit'));
+    }
+
+    public function testShouldCastBooleanTrueForNonEmptyObjectValues()
+    {
+        $this->_view->objectValue = (object) array('42', 77);
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(true, $this->_view->toBool('objectValue'));
+        $this->assertSame(true, $this->_view->objectValue->toBool());
+        $this->assertSame(true, $this->_view->objectValue->toBool('/1'));
+        $this->assertSame(false, $this->_view->objectValue->toBool('3'));
+    }
+
+    public function testShouldCastBooleanFalseForEmptyObjectValues()
+    {
+        $this->_view->objectValue = new stdClass();
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->toBool('objectValue'));
+        $this->assertSame(false, $this->_view->objectValue->toBool());
+    }
+
+    public function testShouldCastBooleanForObjectValuesAndToDeepPropertyCall()
+    {
+        $this->_view->objectValue = (object) array('42');
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertSame(false, $this->_view->objectValue->toBool('/0/to/deep/bullshit'));
+    }
     
 }
