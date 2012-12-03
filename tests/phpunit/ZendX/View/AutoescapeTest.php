@@ -47,6 +47,9 @@ class ZendX_View_AutoescapeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->_view->getVars());
     }
 
+    /**
+     * @see ZendX_View_Facade_StringTest
+     */
     public function testHtmlEscapingContextForStringTypes()
     {
         $this->_view->stringValue = 'Hallo <Jens> gib mal €s';
@@ -65,12 +68,11 @@ class ZendX_View_AutoescapeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', (string) $this->_view->assignString->getProperty('foo'));
     }
 
-    public function testHtmlEscapingContextForBasicDataTypeNumberBooleanNull()
+    public function testHtmlEscapingContextForBasicDataTypeNumberBoolean()
     {
         $this->_view->numberValue = 123.724;
         $this->_view->BooleanTrue = true;
         $this->_view->BooleanFalse = true;
-        $this->_view->nullValue = null;
         $this->_view->assign('assignNr', 234);
         $this->_view->render('renderDummy.tpl');
 
@@ -81,14 +83,24 @@ class ZendX_View_AutoescapeTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(true == $this->_view->BooleanTrue);
         $this->assertFalse(false == $this->_view->BooleanFalse);
         $this->assertSame(true, $this->_view->BooleanTrue);
-        $this->assertInstanceOf('ZendX_View_Facade_Null', $this->_view->nullValue);
         $this->assertEquals(123.724, $this->_view->html('numberValue'));
         $this->assertEquals(true, $this->_view->html('BooleanTrue'));
-        $this->assertEquals('', (string) $this->_view->html('nullValue'));
         $this->assertEquals(123.724, $this->_view->nofilter('numberValue'));
     }
 
-    public function testFacadeTypingForArrays()
+    /**
+     * @see ZendX_View_Facade_NullTest
+     */
+    public function testHtmlEscapingContextForBasicDataTypeNull()
+    {
+        $this->_view->nullValue = null;
+        $this->_view->render('renderDummy.tpl');
+
+        $this->assertInstanceOf('ZendX_View_Facade_Null', $this->_view->nullValue);
+        $this->assertEquals('', (string) $this->_view->html('nullValue'));
+    }
+
+    public function testShouldGetFacadeTypingForArrayValues()
     {
         $this->_view->arrayValue = array(
             'erstesElement<br />',
@@ -99,13 +111,20 @@ class ZendX_View_AutoescapeTest extends PHPUnit_Framework_TestCase
         );
         $this->_view->render('renderDummy.tpl');
 
+        $this->assertInstanceOf('ZendX_View_Facade_Iterator', $this->_view->arrayValue);
+        $this->assertInstanceOf('ZendX_View_Facade_Iterator', $this->_view->arrayValue->getProperty('deep'));
+
         $this->assertTrue((boolean) $this->_view->arrayValue);
         $this->assertEquals(3, count($this->_view->arrayValue));
         $this->assertEquals('erstesElement&lt;br /&gt;', (string) $this->_view->arrayValue->getProperty('/0'));
         $this->assertEquals('', (string) $this->_view->arrayValue->getProperty('drittes'));
         $this->assertEquals('', (string) $this->_view->arrayValue->getProperty('drittes/pusteKuchen'));
         $this->assertSame('&lt;tags&gt;', (string) $this->_view->arrayValue->html('deep/magic'));
+    }
 
+
+    public function testShouldGetFacadeTypingForEmptyArray()
+    {
         $this->_view->emptyArray = array();
         $this->_view->render('renderDummy.tpl');
 
@@ -114,35 +133,24 @@ class ZendX_View_AutoescapeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', (string) $this->_view->emptyArray->html('0'));
     }
 
-    public function testFacadeTypingForAbstractBeanStructures()
+    public function testFacadeTypingForComplexTypes()
     {
         $this->_view->customer = new ZendX_Bean(
-                        array(
-                            'name' => 'Jens',
-                            'currency' => '€',
-                            'deepArray' => array(
-                                'internet' => '32Mbit <SCRIPT SRC=http://ha.ckers.org/xss.js></SCRIPT>',
-                                'deepArray' => array(
-                                    'internet' => '32Mbit <SCRIPT SRC=http://ha.ckers.org/xss.js></SCRIPT>'
-                                ),
-                            ),
-                            'deepAbstractBean' => new ZendX_Bean(
-                                    array('hackerz' => '\';alert(String.fromCharCode(88,83,83))//\\\';')
-                            ),
-                            'deepStdObject' => (object) array(
-                                'hackerz' => '<IMG SRC="javascript:alert(\'XSS\');">'
-                            )
-                        )
+            array(
+                'deepAbstractBean' => new ZendX_Bean(
+                    array('hackerz' => '\';alert(String.fromCharCode(88,83,83))//\\\';')
+                ),
+                'deepStdObject' => (object) array(
+                    'hackerz' => '<IMG SRC="javascript:alert(\'XSS\');">'
+                )
+            )
         );
         $this->_view->render('renderDummy.tpl');
 
-        // string context der komplexen struktueren View sicher machen
+        // string context
         $this->assertEquals('ViewFacade', (string) $this->_view->customer);
-        $this->assertEquals('ViewIterator', (string) $this->_view->customer->getProperty('deepArray'));
-        // im PHP context Objekte erhalten
+        // PHP context 
         $this->assertInstanceOf('ZendX_View_Facade_Bean', $this->_view->customer);
-        $this->assertInstanceOf('ZendX_View_Facade_Iterator', $this->_view->customer->getProperty('deepArray'));
-        $this->assertInstanceOf('ZendX_View_Facade_Iterator', $this->_view->customer->getProperty('deepArray/deepArray'));
         $this->assertInstanceOf('ZendX_View_Facade_Bean', $this->_view->customer->getProperty('deepAbstractBean'));
         $this->assertInstanceOf('ZendX_View_Facade_Iterator', $this->_view->customer->getProperty('deepStdObject'));
     }
@@ -150,23 +158,23 @@ class ZendX_View_AutoescapeTest extends PHPUnit_Framework_TestCase
     public function testHtmlEscapingContextForAbstractBeanViaHtmlFunction()
     {
         $this->_view->customer = new ZendX_Bean(// ein AbstractBean Erbe der weichere setProperty() hat
-                        array(
-                            'name' => 'Bar<ß>',
-                            'currency' => '$',
-                            'deepArray' => array(
-                                'internet' => '32<Mbit>',
-                                'deepArray' => array(
-                                    'internet' => '100<Mbit>'
-                                )
-                            ),
-                            'deepAbstractBean' => new ZendX_Bean(
-                                    array('hackerz' => 'Schei<ß> Encoding')
-                            ),
-                            'deepStdObject' => (object) array(
-                                'hackerz' => '<br />'
-                            ),
-                            'simpleVar' => 8765
-                        )
+            array(
+                'name' => 'Bar<ß>',
+                'currency' => '$',
+                'deepArray' => array(
+                    'internet' => '32<Mbit>',
+                    'deepArray' => array(
+                        'internet' => '100<Mbit>'
+                    )
+                ),
+                'deepAbstractBean' => new ZendX_Bean(
+                        array('hackerz' => 'Schei<ß> Encoding')
+                ),
+                'deepStdObject' => (object) array(
+                    'hackerz' => '<br />'
+                ),
+                'simpleVar' => 8765
+            )
         );
         $this->_view->render('renderDummy.tpl');
 
