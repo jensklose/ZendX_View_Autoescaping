@@ -1,6 +1,6 @@
 # ZendX_View_Autoescaping
 
-This project provide you an ViewRenderer with autoescaping of all assigned view variables. It also prevent you to use object variables within viewskripts to call methods. This is better placed in your models.
+This project provides you a ViewRenderer with autoescaping of all assigned view variables. It also prevent you to use object variables within viewskripts to call methods. This is better placed in your models.
 
 See the examples and tests to understand the facade concept.
 
@@ -12,10 +12,33 @@ See the examples and tests to understand the facade concept.
 
 ## Installation
 
+### Composer
+    ...
+    "repositories": [
+        {
+            "type" : "vcs",
+            "url" : "https://github.com/jensklose/ZendX_View_Autoescaping.git"
+        },
+        {
+            "type" : "vcs",
+            "url" : "https://github.com/cdsinternetagentur/zf1-composer.git"
+        }
+    ],
+
+    "require": {
+        
+        "zendx/viewautoescape": ">=1.2.1",
+        "zend/zendframework": "<2"
+    }
+
+    
+
+### Download
 Copy the sources to your project library path and add the ZendX namespace to project autoloader.
 
     autoloaderNamespaces[] = "ZendX_"
 
+## Configuration
 Init the view in your bootstrap.php
 
     protected function _initView()
