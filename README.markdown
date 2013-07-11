@@ -4,6 +4,8 @@ This project provides you a ViewRenderer with autoescaping of all assigned view 
 
 See the examples and tests to understand the facade concept.
 
+[![Build Status](https://travis-ci.org/jensklose/ZendX_View_Autoescaping.png?branch=master)](https://travis-ci.org/jensklose/ZendX_View_Autoescaping)
+
 ## Requirements
 
 * Zend Framework 1.X
