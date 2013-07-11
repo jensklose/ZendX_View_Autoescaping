@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./tests/phpunit/TestBootstrap.php">
+    <php>
+        <ini name="memory_limit" value="1024M" />
+    </php>
+    <testsuite name="ZendX_View_Autoescaping">
+       <directory>./tests/phpunit</directory>
+    </testsuite>
+</phpunit>
