@@ -8,22 +8,15 @@
         "zf1",
         "zendframework"
     ],
-    "repositories": [
-        {
-            "packagist": false
-        },
-        {
-            "type" : "vcs",
-            "url" : "https://github.com/cdsinternetagentur/zf1-composer.git"
-        }
-    ],
     "homepage": "https://github.com/jensklose/ZendX_View_Autoescaping",
     "license": "BSD-3-Clause",
     "require": {
-        "php": ">=5.2.4",
-        "zend/zendframework": "<2"
+        "php": ">=5.2.4"
     },
-    
+    "require-dev": {
+        "mazelab/zendframework1-min": "<2",
+        "phpunit/phpunit": "~3.7"
+    },
     "autoload": {
         "classmap": ["ZendX"]
     },
