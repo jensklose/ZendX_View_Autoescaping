@@ -16,21 +16,8 @@ See the examples and tests to understand the facade concept.
 
 ### Composer
     ...
-    "repositories": [
-        {
-            "type" : "vcs",
-            "url" : "https://github.com/jensklose/ZendX_View_Autoescaping.git"
-        },
-        {
-            "type" : "vcs",
-            "url" : "https://github.com/cdsinternetagentur/zf1-composer.git"
-        }
-    ],
-
     "require": {
-        
         "zendx/viewautoescape": ">=1.2.1",
-        "zend/zendframework": "<2"
     }
 
     
