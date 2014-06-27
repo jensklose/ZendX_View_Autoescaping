@@ -1,6 +1,6 @@
 {
     "name": "zendx/viewautoescape",
-    "description": "Zend Framework 1 autoescaping",
+    "description": "Zend Framework 1 auto escaping",
     "type": "library",
     "keywords": [
         "escaping",
@@ -22,7 +22,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.5-dev"
+            "dev-master": "1.6-dev"
         }
     }
 }
