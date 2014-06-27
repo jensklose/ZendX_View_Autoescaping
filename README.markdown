@@ -1,6 +1,6 @@
 # ZendX_View_Autoescaping
 
-This project provides you a ViewRenderer with auto escaping of all assigned view variables. It also prevents you to use object variables within view skripts to call methods. This is better placed in your models.
+This project provides you a ViewRenderer with auto escaping of all assigned view variables. It also prevents you to use object variables within view skripts to call methods.
 
 See the examples and tests to understand the facade concept.
 
@@ -17,7 +17,7 @@ See the examples and tests to understand the facade concept.
 ### Composer
     ...
     "require": {
-        "zendx/viewautoescape": ">=1.2.1",
+        "zendx/viewautoescape": "~1.5",
     }
 
     
