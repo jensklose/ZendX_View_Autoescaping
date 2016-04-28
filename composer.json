@@ -14,7 +14,7 @@
         "php": ">=5.2.4"
     },
     "require-dev": {
-        "mazelab/zendframework1-min": "<2",
+        "zendframework/zendframework1": "~1.12",
         "phpunit/phpunit": "~3.7"
     },
     "autoload": {
